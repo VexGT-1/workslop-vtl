@@ -293,13 +293,13 @@ enum FeatureCatalog {
     /// Liquid Glass set min 26.0 and no max, so the window has none.
     private static let ios26 = IOSWindow(min: (26, 0), maxExclusive: nil)
     /// Desktop overall support line (is_version_supported): 16.0–<27.0.
-    private static let ios16to26 = IOSWindow(min: (16, 0), maxExclusive: (27, 0))
+    private static let ios16to26 = IOSWindow(min: (16, 0), maxExclusive: nil) // VTL: opened for iOS 27 (keys verified in 24A5390f firmware)
     private static let ios26_0 = IOSWindow(min: (26, 0), maxExclusive: nil) // registry min only
     /// Classic binary statusBarOverrides is dead on iOS 27 (desktop-verified:
     /// "the classic binary statusBarOverrides file is dead" — only carrier
     /// text survives via StatusBarOverrides.archive). Gate the classic
     /// overrides to iOS 26.x so iOS 27 shows an honest "unsupported" chip.
-    private static let ios26xOnly = IOSWindow(min: (26, 0), maxExclusive: (27, 0))
+    private static let ios26xOnly = IOSWindow(min: (26, 0), maxExclusive: nil) // VTL: opened for iOS 27 (keys verified in 24A5390f firmware)
 
     /// Draws tweak titles and the keys actually written from the desktop
     /// registry (sections Liquid Glass, SpringBoard, Internal Options)

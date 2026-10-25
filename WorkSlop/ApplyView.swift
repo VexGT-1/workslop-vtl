@@ -242,6 +242,7 @@ struct ApplyView: View {
     private var effectiveStaged: Set<String> {
         var ids = selection.staged
         if hasStagedIcons { ids.insert("custom-icons") }
+        if CustomKeyStore.hasEnabled { ids.insert(CustomKeyStore.featureID) }
         return ids
     }
 

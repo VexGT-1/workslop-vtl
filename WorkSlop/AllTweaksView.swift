@@ -14,6 +14,8 @@ struct AllTweaksView: View {
         TweakGroup(id: "Apple Internal", icon: "hammer", footer: nil),
         TweakGroup(id: "PosterBoard", icon: "rectangle.on.rectangle", footer: nil),
         TweakGroup(id: "Custom Icons", icon: "app.dashed", footer: nil),
+        TweakGroup(id: "Custom Keys", icon: "key",
+                   footer: "Any plist key you type, plus presets found in the iOS 27 firmware."),
         TweakGroup(id: "AirFlit", icon: "creditcard",
                    footer: "Passcode themes + Wallet card images via the AirCard method (AirTraffic). iOS 18.0 – 27.2 beta 2 only."),
     ]
@@ -26,6 +28,8 @@ struct AllTweaksView: View {
                     NavigationLink {
                         if group.id == "AirFlit" {
                             AirFlitView()
+                        } else if group.id == "Custom Keys" {
+                            CustomKeysView()
                         } else {
                             TweakListView(group: group)
                         }
@@ -69,6 +73,7 @@ struct TweakGroup: Identifiable, Hashable {
         case "Custom Icons": return IOS18IconCatalog.tintedIcons.count + CustomIconStore.load().count
         case "PosterBoard": return FeatureCatalog.features(in: "PosterBoard").count
         case "AirFlit": return 2 // Passcode Theme + Wallet Image
+        case "Custom Keys": return CustomKeyStore.load().count
         default: return FeatureCatalog.features(in: catalogSection).count
         }
     }

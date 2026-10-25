@@ -79,6 +79,22 @@ enum PayloadBuilder {
             }
         }
 
+        // VTL: user-defined custom keys (CustomKeys.swift), merged into
+        // the same per-file groups as the catalog writes.
+        if staged.contains(CustomKeyStore.featureID) {
+            for entry in CustomKeyStore.load() where entry.enabled && entry.isValid {
+                guard let value = entry.payloadValue else {
+                    warnings.append("custom-keys: \(entry.key) has an invalid value - skipped.")
+                    continue
+                }
+                let write = entry.file.write(key: entry.key, value: value, domainName: entry.domainName)
+                let groupKey = write.domain.rawValue + "|" + write.restorePath
+                var group = grouped[groupKey] ?? (write.domain.rawValue, [:], write)
+                group.values[entry.key] = plistValue(value)
+                grouped[groupKey] = group
+            }
+        }
+
         // Desktop seed: any Daemons apply also carries the six
         // upstream always-included daemon states
         // (daemons_tweak.py:220-227, loaded in tweak_loader.py).
@@ -301,6 +317,7 @@ enum PayloadBuilder {
         case .bool(let b): return b
         case .int(let i): return i
         case .string(let s): return s
+        case .double(let d): return d
         case .userSuppliedString, .userSuppliedData: return ""
         }
     }

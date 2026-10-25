@@ -45,6 +45,7 @@ enum PayloadValue: Equatable {
     case bool(Bool)
     case int(Int)
     case string(String)
+    case double(Double)
     /// A string that must be supplied by a user selection at apply time.
     case userSuppliedString(field: String)
     /// Binary data that must be supplied by a user selection at apply time.
