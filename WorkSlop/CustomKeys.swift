@@ -232,7 +232,7 @@ enum CustomKeyPresets {
 }
 
 struct CustomKeysView: View {
-    @StateObject private var model = CustomKeyModel()
+    @EnvironmentObject private var model: CustomKeyModel
     @State private var editing: CustomKeyEntry?
 
     var body: some View {

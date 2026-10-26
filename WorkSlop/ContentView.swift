@@ -12,6 +12,7 @@ struct ContentView: View {
     // to enable Apply), so the stage lives at the root, not inside the
     // tweak list.
     @StateObject private var iconStage = IconStage()
+    @StateObject private var customKeys = CustomKeyModel()
 
     init(demoScreen: String? = nil) {
         self.demoScreen = demoScreen
@@ -22,6 +23,7 @@ struct ContentView: View {
             .environmentObject(selection)
             .environmentObject(status)
             .environmentObject(iconStage)
+            .environmentObject(customKeys)
             .task {
                 await updater.check()
             }

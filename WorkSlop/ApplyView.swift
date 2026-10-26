@@ -19,6 +19,7 @@ struct ApplyView: View {
     @EnvironmentObject private var status: StatusStore
     @EnvironmentObject private var selection: SelectionStore
     @EnvironmentObject private var iconStage: IconStage
+    @EnvironmentObject private var customKeys: CustomKeyModel
 
     @State private var findMyOff = false
     @State private var riskAccepted = false
@@ -53,7 +54,7 @@ struct ApplyView: View {
         List {
             Section {
                 preflightRow("Tweaks staged", ok: !effectiveStaged.isEmpty,
-                             detail: "\(selection.staged.count + (hasStagedIcons ? 1 : 0))")
+                             detail: "\(selection.staged.count + (hasStagedIcons ? 1 : 0) + (customKeys.entries.contains(where: { $0.enabled && $0.isValid }) ? 1 : 0))")
                 preflightRow("Pairing file imported", ok: status.pairingImported, detail: nil)
                 preflightRow("VPN tunnel detected", ok: status.vpnDetected, detail: nil)
                 Toggle("Find My is OFF on this iPhone", isOn: $findMyOff)
@@ -242,7 +243,9 @@ struct ApplyView: View {
     private var effectiveStaged: Set<String> {
         var ids = selection.staged
         if hasStagedIcons { ids.insert("custom-icons") }
-        if CustomKeyStore.hasEnabled { ids.insert(CustomKeyStore.featureID) }
+        if customKeys.entries.contains(where: { $0.enabled && $0.isValid }) {
+            ids.insert(CustomKeyStore.featureID)
+        }
         return ids
     }
 
